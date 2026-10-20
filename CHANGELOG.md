@@ -6,6 +6,8 @@ Formatet følger [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) og pro
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-10-20
+
 ### Endret
 - Pakken heter nå Laravel Instructions. Composer-pakke, namespace, kommando, config, publiserings-tag, dokumentfil og agentmarkører bruker det nye navnet.
 - Synkronisering erstatter eksisterende agentblokker med de gamle markørene.
