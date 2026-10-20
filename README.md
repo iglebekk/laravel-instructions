@@ -1,8 +1,8 @@
 # Laravel Instructions (pakke)
 
-Denne pakken publiserer dokumentasjonen om kodestandarder og beste praksis for Laravel.
+Denne pakken publiserer dokumentasjon med kodestandarder og beste praksis for Laravel. Den installerer ikke Bootstrap eller agent-skills i app-prosjekter.
 
-Den publiserte dokumentasjonen anbefaler Flux UI som standard for egenprodusert Blade-UI, alltid gjennom app-spesifikke komponenter.
+Den publiserte dokumentasjonen anbefaler Bootstrap 6 alpha for egenprodusert frontend, med Blade og app-spesifikke komponenter.
 
 Støttede Laravel-versjoner: `9.x`, `10.x`, `11.x`, `12.x`, `13.x`.
 

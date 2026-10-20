@@ -22,9 +22,17 @@ it('writes full docs to docs_target', function () {
     $this->artisan('laravel-instructions:sync')->assertSuccessful();
 
     $docs = $this->workspace.'/docs/laravel-instructions.md';
+    $source = dirname(__DIR__).'/resources/docs/laravel-instructions.md';
+
     expect(File::exists($docs))->toBeTrue();
     expect(File::get($docs))
         ->not->toBeEmpty()
+        ->toBe(File::get($source))
+        ->toContain('Bootstrap 6')
+        ->not->toContain('Flux UI')
+        ->not->toContain('Tailwind')
+        ->not->toContain('Alpine')
+        ->not->toContain('Filament')
         ->toContain('## Arbeidsregler for AI-assistenter')
         ->toContain('### 1. Think Before Coding')
         ->toContain('## CRUDdy by Design (obligatorisk standard)')

@@ -76,8 +76,7 @@ Sterke suksesskriterier gjør at AI-en kan jobbe selvstendig uten å gjette. Sva
 
 - Default: Velg innebygd Laravel/Eloquent før custom kode.
 - Default: Velg Spatie-pakker før andre tredjepartspakker når behovet dekkes.
-- Default: Bruk Flux UI for egenprodusert Blade-UI, alltid gjennom app-spesifikke komponenter.
-- Default: Filament er egen admin-/resource-løsning og kan brukes der det passer, men egenprodusert frontend følger fortsatt Flux- og komponentreglene.
+- Default: Bruk Bootstrap 6 alpha for styling og innebygde UI-komponenter, innkapslet i app-spesifikke Blade-komponenter.
 - Default: Installer alltid Laravel Boost MCP Tools for rask innsikt i codebase og debugging (https://laravel.com/ai/boost)
 
 ## CRUDdy by Design (obligatorisk standard)
@@ -151,14 +150,14 @@ Sterke suksesskriterier gjør at AI-en kan jobbe selvstendig uten å gjette. Sva
 - Finnes dette i Laravel core?
 - Finnes dette i Eloquent API?
 - Finnes dette i Spatie?
-- Dekker Laravel, Eloquent, Spatie, Flux UI eller Filament behovet?
+- Dekker Laravel, Eloquent, Spatie eller Bootstrap behovet?
 - Hvis nei: kan enkel custom kode forsvares?
 
 ### Ved valg av autentisering
 
 - Spør alltid brukeren om OAuth, SSO eller social login er viktig før du velger auth-pakke.
 - Bruk Laravel Fortify som standard for autentisering.
-- Fortify er frontend-agnostisk og skal pares med prosjektets egne Blade-/Flux-komponenter.
+- Fortify er frontend-agnostisk og skal pares med prosjektets egne Blade-komponenter.
 - Hvis OAuth/SSO er viktig, velg en løsning som dekker behovet naturlig og begrunn valget kort.
 
 ## 📦 Anbefalt Teknologi-stack
@@ -179,11 +178,24 @@ Sterke suksesskriterier gjør at AI-en kan jobbe selvstendig uten å gjette. Sva
 ### Frontend
 
 - **Blade** templates med komponentbasert arkitektur
-- **TailwindCSS v4** for styling
-- **Alpine.js v3** for enkel interaktivitet
+- **Bootstrap 6.0.0-alpha.1** for styling og UI-komponenter (alpha; følg offisiell dokumentasjon for gjeldende status og [nettleserstøtte](https://getbootstrap.com/docs/6.0/getting-started/browsers-devices/))
 - **Vite** for asset bundling
 - Frontend-design skal alltid tenkes og bygges mobile first.
-- Egenprodusert frontend bygges med Blade-komponenter, app-spesifikke Flux-wrappere og lokaliserte tekster.
+- Egenprodusert frontend bygges med app-spesifikke Blade-komponenter og lokaliserte tekster. Sidevisninger komponerer komponenter i stedet for å inneholde rå HTML-markup.
+
+Installer Bootstrap i et Laravel-prosjekt med npm og bruk prosjektets eksisterende Vite-oppsett:
+
+```bash
+npm install bootstrap@6.0.0-alpha.1
+```
+
+Importer Bootstrap-stilarket fra `resources/css/app.css` og la layout-komponenten laste Vite-filene med `@vite(['resources/css/app.css', 'resources/js/app.js'])`:
+
+```css
+@import 'bootstrap/dist/css/bootstrap.min.css';
+```
+
+Importer JavaScript fra `bootstrap` i `resources/js/app.js` bare når interaktive Bootstrap-komponenter trengs. Ikke legg JavaScript i Blade-visninger. Se [Bootstrap install](https://getbootstrap.com/docs/6.0/getting-started/install/) og [Bootstrap med Vite](https://getbootstrap.com/docs/6.0/guides/vite/) for oppsett og oppdaterte imports.
 
 ### Testing & Kvalitet
 
@@ -193,21 +205,20 @@ Sterke suksesskriterier gjør at AI-en kan jobbe selvstendig uten å gjette. Sva
 
 ### Komponentbibliotek
 
-- **Flux UI** - Standard UI-bibliotek for egenproduserte Blade-komponenter.
-- **Filament** - Kan brukes som egen admin-/resource-løsning der det passer.
+- **Bootstrap 6 alpha** - Standard for komponenter, grid og utilities i egenprodusert frontend.
 - **Spatie-pakker** - Foretrukket tredjeparts-leverandør (Media Library, Permissions, etc.)
 
 ## 🏗️ Arkitekturprinsipper
 
 ### Komponent-wrapper Mønster
 
-**VIKTIG**: Flux UI-komponenter og annen tredjeparts-UI skal alltid wrappes i egne app-spesifikke Blade-komponenter før de brukes i views.
+**VIKTIG**: Bootstrap-komponentmarkup skal alltid kapsles i app-spesifikke Blade-komponenter før den brukes i views. Views skal komponere disse komponentene, ikke inneholde rå HTML-markup.
 
 ```
 resources/views/components/
 ├── app/              # App-specific wrapper components
-│   ├── card/         # Wrapper for Flux card with app-specific styling
-│   ├── button/       # Wrapper for Flux button
+│   ├── card/         # App-specific card component styled with Bootstrap
+│   ├── button/       # App-specific button component styled with Bootstrap
 │   └── ...
 ├── form/             # Form components
 ├── layouts/          # Layout components
@@ -467,6 +478,14 @@ class PipelineStage extends Model
 </x-layouts.app>
 ```
 
+Selve Bootstrap-markupen hører hjemme i komponenten, for eksempel `resources/views/components/app/card.blade.php`:
+
+```blade
+<div {{ $attributes->class(['card']) }}>
+    <div class="card-body">{{ $slot }}</div>
+</div>
+```
+
 ### Form Pattern
 
 ```blade
@@ -498,13 +517,13 @@ class PipelineStage extends Model
 </x-form>
 ```
 
-### Tailwind CSS Mønstre
+### Bootstrap 6 Mønstre
 
-- Bruk utility classes i komponenter, ikke spre store layoutblokker direkte i page views
-- Konsistent spacing: `gap-2`, `gap-3`, `gap-4`, `space-y-4`, `space-y-6`
-- Konsistent padding: `py-6`, `p-4`, `px-4`
-- Mobile first responsive design: base classes for mobile, breakpoint-prefixes for større skjermer (`grid-cols-1 lg:grid-cols-4`)
-- Consistent rounding: `rounded-lg` (8px)
+- Bruk Bootstrap-komponenter for vanlige UI-mønstre og Bootstrap grid for responsive sideoppsett.
+- Bruk Bootstrap utilities for avgrensede spacing-, flex-, display- og typografibehov; legg gjentatte mønstre i app-spesifikke Blade-komponenter.
+- Bygg mobile first med Bootstrap-breakpoints og grid. Sjekk Bootstrap 6-dokumentasjonen før du velger komponentklasser, siden alpha-versjonen kan endres.
+- Bruk Bootstrap CSS-variabler for temaverdier der de dekker behovet. Bruk Sass-variabler og Sass-kildeimport når prosjektet trenger å tilpasse Bootstrap før bygging.
+- Se [komponenter](https://getbootstrap.com/docs/6.0/components/), [grid](https://getbootstrap.com/docs/6.0/layout/grid/), [utilities](https://getbootstrap.com/docs/6.0/utilities/api/) og [CSS-variabler](https://getbootstrap.com/docs/6.0/getting-started/css-variables/) i den offisielle dokumentasjonen.
 
 ## 🧪 Testing med Pest
 
@@ -641,7 +660,7 @@ Dette sikrer at kommandoen kjører uten brukerinput, viktig for automatisering o
 1. **Analyser** - Forstå eksisterende mønstre i codebase
 2. **Plan** - Lag strukturert plan før implementering
 3. **Implementer** - Backend først (routes, request, policy, controller, actions/services ved behov)
-4. **Views** - Bygg med Blade-komponenter, Flux-wrappere og mobile first layout
+4. **Views** - Bygg med app-spesifikke Blade-komponenter, Bootstrap 6 og mobile first layout
 5. **Lokaliser** - Legg til translation keys
 6. **Test** - Skriv dekkende feature tests
 7. **Format** - Kjør `vendor/bin/pint --dirty --format agent`
@@ -691,7 +710,7 @@ Route::middleware(['auth', 'tenant'])->group(function () {
 - [ ] Policy for domeneautorisasjon der relevant
 - [ ] Routes med korrekt naming convention
 - [ ] Views komponerer app-spesifikke Blade-komponenter
-- [ ] Flux UI brukes kun gjennom app-spesifikke wrappers
+- [ ] Bootstrap-komponenter brukes gjennom app-spesifikke Blade-komponenter
 - [ ] Mobile first layout er ivaretatt
 - [ ] Translation keys for alle UI-tekster
 - [ ] Feature tests (happy path + edge cases)
@@ -722,6 +741,10 @@ laravel-boost-mcp-application-info
 # Get absolute URL
 laravel-boost-mcp-get-absolute-url --path="/dashboard"
 ```
+
+### Bootstrap-dokumentasjon for AI-agenter
+
+Før Bootstrap-frontend implementeres, bruk Bootstraps [maskinlesbare dokumentasjonsindeks (`llms.txt`)](https://getbootstrap.com/llms.txt) og [relevante offisielle skills](https://getbootstrap.com/docs/6.0/getting-started/ai/), for eksempel `bootstrap-v6-install`, `bootstrap-vite` og `bootstrap-component`. Velg skill for oppgaven, og kontroller endringene mot Bootstrap-dokumentasjonen. Denne pakken installerer ikke disse skills.
 
 ## 🔐 Laravel MCP Server Best Practices
 
@@ -821,7 +844,7 @@ class ShowProjectTool extends Tool
 1. **CRUDdy by Design** - KI-agenter bruker alltid resource-controllere og standard CRUD-actions med mindre annet er eksplisitt spesifisert
 2. **Deleger implementasjon** - KI-agenter bruker alltid enkleste egnede underagent til koding og filendringer
 3. **Følg Laravel Conventions** - Bruk Laravels innebygde løsninger først
-4. **Flux via App-komponenter** - Bruk Flux UI gjennom egne Blade-wrappere
+4. **Bootstrap via App-komponenter** - Bruk Bootstrap gjennom egne Blade-komponenter
 5. **Test Everything** - Feature tests er påkrevd
 6. **Type Hints Everywhere** - PHP 8.3+ features
 7. **Lokalisering fra Start** - Ingen hardkodet tekst
@@ -842,6 +865,7 @@ class ShowProjectTool extends Tool
 
 - Laravel Documentation: https://laravel.com/docs
 - Pest Documentation: https://pestphp.com
-- Tailwind CSS Documentation: https://tailwindcss.com
+- Bootstrap 6 Documentation: https://getbootstrap.com/docs/6.0/
+- Bootstrap 6 AI documentation and skills: https://getbootstrap.com/docs/6.0/getting-started/ai/
 - Laravel Best Practices: https://github.com/alexeymezenin/laravel-best-practices
 - Spatie Packages: https://spatie.be/open-source

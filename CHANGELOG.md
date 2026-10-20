@@ -6,6 +6,12 @@ Formatet følger [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) og pro
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-10-20
+
+### Endret
+- Dokumentasjonen anbefaler Bootstrap 6 alpha for egenprodusert frontend.
+- Pakken publiserer instruksjoner, men installerer ikke Bootstrap eller agent-skills i app-prosjekter.
+
 ## [4.0.0] - 2026-10-20
 
 ### Endret
