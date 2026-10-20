@@ -1,4 +1,4 @@
-# Generelle Laravel-prinsipper (pakke)
+# Laravel Instructions (pakke)
 
 Denne pakken publiserer dokumentasjonen om kodestandarder og beste praksis for Laravel.
 
@@ -9,51 +9,53 @@ Støttede Laravel-versjoner: `9.x`, `10.x`, `11.x`, `12.x`, `13.x`.
 ## Installasjon
 
 ```bash
-composer require iglebekk/generelle-laravel-prinsipper --dev
+composer require iglebekk/laravel-instructions --dev
 ```
 
 ## Publiser dokumentasjon
 
 ```bash
-php artisan vendor:publish --tag=laravel-prinsipper-docs
+php artisan vendor:publish --tag=laravel-instructions-docs
 ```
 
-Dette legger dokumentasjonen i `docs/laravel-prinsipper.md` i prosjektet ditt.
+Dette legger dokumentasjonen i `docs/laravel-instructions.md` i prosjektet ditt.
 
 ## Synkronisering til instruksjonsfiler
 
 For å sikre at siste versjon alltid er tilgjengelig i prosjektet og AI-instruksjonsfiler, kjør:
 
 ```bash
-php artisan laravel-prinsipper:sync
+php artisan laravel-instructions:sync
 ```
 
 Standard atferd:
-- `docs/laravel-prinsipper.md` overskrives med full prinsipptekst (kilde).
+- `docs/laravel-instructions.md` overskrives med full prinsipptekst (kilde).
 - `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` får kun en kort referanse mellom markørene som peker til docs-fila — for å unngå duplisert innhold.
 
 Markører:
 ```
-<!-- LARAVEL-PRINSIPPER:START -->
-<!-- LARAVEL-PRINSIPPER:END -->
+<!-- LARAVEL-INSTRUCTIONS:START -->
+<!-- LARAVEL-INSTRUCTIONS:END -->
 ```
 
 ## Konfigurasjon
 
 ```bash
-php artisan vendor:publish --tag=laravel-prinsipper-config
+php artisan vendor:publish --tag=laravel-instructions-config
 ```
 
-I `config/laravel-prinsipper.php` kan du justere `source`, `docs_target`, `reference_targets`, `reference_body` og markører.
+I `config/laravel-instructions.php` kan du justere `source`, `docs_target`, `reference_targets`, `reference_body` og markører.
 
 ## Oppdatering
 
 Når retningslinjene oppdateres i pakken, kjør:
 
 ```bash
-composer update iglebekk/generelle-laravel-prinsipper
-php artisan laravel-prinsipper:sync
+composer update iglebekk/laravel-instructions
+php artisan laravel-instructions:sync
 ```
+
+Ved overgang fra det tidligere pakkenavnet: erstatt Composer-kravet og eventuelle Composer-skript med de nye navnene over. Flytt egne config-endringer til `config/laravel-instructions.php`. Første synkronisering erstatter gamle markører i agentfilene; den gamle dokumentfilen i `docs/` må fjernes manuelt når den ikke lenger brukes.
 
 ## Utvikling
 
@@ -70,10 +72,10 @@ Legg til i prosjektets `composer.json`:
 {
   "scripts": {
     "post-install-cmd": [
-      "@php -r \"require_once 'vendor/autoload.php'; if (! class_exists('Iglebekk\\\\LaravelPrinciples\\\\LaravelPrinciplesServiceProvider')) { exit(0); } passthru(PHP_BINARY . ' artisan laravel-prinsipper:sync --no-interaction', $exitCode); exit($exitCode);\""
+      "@php -r \"require_once 'vendor/autoload.php'; if (! class_exists('Iglebekk\\\\LaravelInstructions\\\\LaravelInstructionsServiceProvider')) { exit(0); } passthru(PHP_BINARY . ' artisan laravel-instructions:sync --no-interaction', $exitCode); exit($exitCode);\""
     ],
     "post-update-cmd": [
-      "@php -r \"require_once 'vendor/autoload.php'; if (! class_exists('Iglebekk\\\\LaravelPrinciples\\\\LaravelPrinciplesServiceProvider')) { exit(0); } passthru(PHP_BINARY . ' artisan laravel-prinsipper:sync --no-interaction', $exitCode); exit($exitCode);\""
+      "@php -r \"require_once 'vendor/autoload.php'; if (! class_exists('Iglebekk\\\\LaravelInstructions\\\\LaravelInstructionsServiceProvider')) { exit(0); } passthru(PHP_BINARY . ' artisan laravel-instructions:sync --no-interaction', $exitCode); exit($exitCode);\""
     ]
   }
 }

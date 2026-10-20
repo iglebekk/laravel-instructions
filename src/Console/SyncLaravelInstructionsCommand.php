@@ -1,16 +1,16 @@
 <?php
 
-namespace Iglebekk\LaravelPrinciples\Console;
+namespace Iglebekk\LaravelInstructions\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 
-class SyncLaravelPrinciplesCommand extends Command
+class SyncLaravelInstructionsCommand extends Command
 {
-    protected $signature = 'laravel-prinsipper:sync';
+    protected $signature = 'laravel-instructions:sync';
 
-    protected $description = 'Sync Laravel principles docs and insert short references into AI instruction files';
+    protected $description = 'Sync Laravel instructions docs and insert short references into AI instruction files';
 
     public function __construct(private readonly Filesystem $files)
     {
@@ -19,7 +19,7 @@ class SyncLaravelPrinciplesCommand extends Command
 
     public function handle(): int
     {
-        $config = config('laravel-prinsipper', []);
+        $config = config('laravel-instructions', []);
         $sourcePath = $this->resolveSourcePath($config['source'] ?? null);
 
         if (! $this->files->exists($sourcePath)) {
@@ -29,25 +29,25 @@ class SyncLaravelPrinciplesCommand extends Command
         }
 
         $source = rtrim($this->files->get($sourcePath));
-        $sectionHeader = rtrim($config['section_header'] ?? '## Generelle Laravel-prinsipper', "\n");
-        $startMarker = $config['start_marker'] ?? '<!-- LARAVEL-PRINSIPPER:START -->';
-        $endMarker = $config['end_marker'] ?? '<!-- LARAVEL-PRINSIPPER:END -->';
+        $sectionHeader = rtrim($config['section_header'] ?? '## Laravel Instructions', "\n");
+        $startMarker = $config['start_marker'] ?? '<!-- LARAVEL-INSTRUCTIONS:START -->';
+        $endMarker = $config['end_marker'] ?? '<!-- LARAVEL-INSTRUCTIONS:END -->';
 
-        $docsTarget = $config['docs_target'] ?? 'docs/laravel-prinsipper.md';
+        $docsTarget = $config['docs_target'] ?? 'docs/laravel-instructions.md';
         if (is_string($docsTarget) && $docsTarget !== '') {
             $this->writeDocs($this->resolvePath($docsTarget), $source);
         }
 
         $referenceBody = trim($config['reference_body'] ?? '');
         if ($referenceBody === '') {
-            $referenceBody = 'Følg prinsippene i `docs/laravel-prinsipper.md`.';
+            $referenceBody = 'Follow the instructions in `docs/laravel-instructions.md`.';
         }
 
         foreach ($this->resolveTargets($config['reference_targets'] ?? []) as $targetPath) {
             $this->syncReference($targetPath, $referenceBody, $sectionHeader, $startMarker, $endMarker);
         }
 
-        $this->info('Laravel principles synced.');
+        $this->info('Laravel instructions synced.');
 
         return self::SUCCESS;
     }
@@ -84,6 +84,14 @@ class SyncLaravelPrinciplesCommand extends Command
         $startPos = strpos($existing, $startMarker);
         $endPos = strpos($existing, $endMarker);
 
+        if ($startPos === false || $endPos === false) {
+            $startPos = strpos($existing, '<!-- LARAVEL-PRINSIPPER:START -->');
+            $endPos = strpos($existing, '<!-- LARAVEL-PRINSIPPER:END -->');
+            $existingEndMarker = '<!-- LARAVEL-PRINSIPPER:END -->';
+        } else {
+            $existingEndMarker = $endMarker;
+        }
+
         $wrappedSection = $startMarker."\n".$section.$endMarker;
 
         if ($startPos === false || $endPos === false || $endPos < $startPos) {
@@ -96,7 +104,7 @@ class SyncLaravelPrinciplesCommand extends Command
         }
 
         $before = substr($existing, 0, $startPos);
-        $after = substr($existing, $endPos + strlen($endMarker));
+        $after = substr($existing, $endPos + strlen($existingEndMarker));
 
         return rtrim($before)."\n\n".$wrappedSection."\n".ltrim($after);
     }
@@ -107,7 +115,7 @@ class SyncLaravelPrinciplesCommand extends Command
             return $this->resolvePath($source);
         }
 
-        return realpath(__DIR__.'/../../resources/docs/laravel-prinsipper.md') ?: __DIR__.'/../../resources/docs/laravel-prinsipper.md';
+        return realpath(__DIR__.'/../../resources/docs/laravel-instructions.md') ?: __DIR__.'/../../resources/docs/laravel-instructions.md';
     }
 
     /**

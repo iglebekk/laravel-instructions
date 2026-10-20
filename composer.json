@@ -1,12 +1,12 @@
 {
-  "name": "iglebekk/generelle-laravel-prinsipper",
-  "description": "Generelle Laravel-utviklingsprinsipper som publishable dokumentasjon.",
+  "name": "iglebekk/laravel-instructions",
+  "description": "Laravel development instructions for AI agents.",
   "type": "library",
   "license": "proprietary",
   "keywords": [
     "laravel",
     "documentation",
-    "principles",
+    "instructions",
     "coding-standards",
     "k2-grunderlab"
   ],
@@ -23,12 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Iglebekk\\LaravelPrinciples\\": "src/"
+      "Iglebekk\\LaravelInstructions\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Iglebekk\\LaravelPrinciples\\Tests\\": "tests/"
+      "Iglebekk\\LaravelInstructions\\Tests\\": "tests/"
     }
   },
   "scripts": {
@@ -44,7 +44,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Iglebekk\\LaravelPrinciples\\LaravelPrinciplesServiceProvider"
+        "Iglebekk\\LaravelInstructions\\LaravelInstructionsServiceProvider"
       ]
     }
   },

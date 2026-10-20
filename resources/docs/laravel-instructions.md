@@ -1,4 +1,4 @@
-# Generelle Laravel-utviklingsprinsipper
+# Laravel Instructions
 
 Dette dokumentet inneholder generelle mønstre, pakker og beste praksis for Laravel-utvikling basert på Laravel Boost Guidelines. Disse prinsippene kan gjenbrukes på tvers av prosjekter.
 

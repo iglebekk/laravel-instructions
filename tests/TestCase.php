@@ -1,8 +1,8 @@
 <?php
 
-namespace Iglebekk\LaravelPrinciples\Tests;
+namespace Iglebekk\LaravelInstructions\Tests;
 
-use Iglebekk\LaravelPrinciples\LaravelPrinciplesServiceProvider;
+use Iglebekk\LaravelInstructions\LaravelInstructionsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -10,7 +10,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            LaravelPrinciplesServiceProvider::class,
+            LaravelInstructionsServiceProvider::class,
         ];
     }
 }

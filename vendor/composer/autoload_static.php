@@ -174,8 +174,8 @@ class ComposerStaticInit50bff265e6cfad518a30b9d2e47ab23f
         array (
             'Illuminate\\Support\\' => 19,
             'Illuminate\\' => 11,
-            'Iglebekk\\LaravelPrinciples\\Tests\\' => 33,
-            'Iglebekk\\LaravelPrinciples\\' => 27,
+            'Iglebekk\\LaravelInstructions\\Tests\\' => 35,
+            'Iglebekk\\LaravelInstructions\\' => 29,
         ),
         'G' =>
         array (
@@ -558,11 +558,11 @@ class ComposerStaticInit50bff265e6cfad518a30b9d2e47ab23f
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
-        'Iglebekk\\LaravelPrinciples\\Tests\\' =>
+        'Iglebekk\\LaravelInstructions\\Tests\\' =>
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'Iglebekk\\LaravelPrinciples\\' =>
+        'Iglebekk\\LaravelInstructions\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
