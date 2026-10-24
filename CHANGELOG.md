@@ -6,6 +6,11 @@ Formatet følger [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) og pro
 
 ## [Unreleased]
 
+## [5.0.1] - 2026-10-24
+
+### Rettet
+- Bootstrap-eksemplene bruker ikke lenger en klasse eller knappvariant fra den tidligere frontend-standarden.
+
 ## [5.0.0] - 2026-10-20
 
 ### Endret

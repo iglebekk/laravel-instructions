@@ -227,7 +227,7 @@ resources/views/components/
 
 **Fordeler**:
 
-- Sentral kontroll over styling (f.eks. `rounded-lg` som standard)
+- Sentral kontroll over styling (f.eks. avrundede hjørner som standard)
 - Enkel endring av standardverdier uten å berøre vendor-kode
 - Mulighet til å bytte ut underliggende bibliotek
 - Konsistens på tvers av applikasjonen
@@ -509,7 +509,7 @@ Selve Bootstrap-markupen hører hjemme i komponenten, for eksempel `resources/vi
 
         <x-app.button
             :href="route('pipeline-stages.index')"
-            variant="ghost"
+            variant="secondary"
         >
             {{ __('pipeline_stages.form.cancel') }}
         </x-app.button>
