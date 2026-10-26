@@ -6,6 +6,14 @@ Formatet følger [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) og pro
 
 ## [Unreleased]
 
+## [6.0.0] - 2026-10-26
+
+### Endret
+- Dokumentasjonen anbefaler Bootstrap 5.3 i stedet for Bootstrap 6 alpha for egenprodusert frontend.
+
+### Fjernet
+- Duplikatet `laravel-instructions.md` i rotmappen. `resources/docs/laravel-instructions.md` er eneste kilde.
+
 ## [5.0.1] - 2026-10-24
 
 ### Rettet
